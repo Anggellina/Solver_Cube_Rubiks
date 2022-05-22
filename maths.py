@@ -3,24 +3,24 @@ class Point:
     """A 3D point/vector"""
 
     def __init__(self, x, y=None, z=None):
-        """Construct a Point from an (x, y, z) tuple or an iterable"""
+       # создание точки координат (x, y, z)
         try:
-            # convert from an iterable
+            # итерация
             ii = iter(x)
             self.x = next(ii)
             self.y = next(ii)
             self.z = next(ii)
         except TypeError:
-            # not iterable
             self.x = x
             self.y = y
             self.z = z
         if any(val is None for val in self):
             raise ValueError(f"Point does not allow None values: {self}")
 
+    #  возвращаем строковое представление объекта
     def __str__(self):
         return str(tuple(self))
-
+    # возвращаем "сырые" данные
     def __repr__(self):
         return "Point" + str(self)
 
@@ -33,8 +33,8 @@ class Point:
     def __mul__(self, other):
         return Point(self.x * other, self.y * other, self.z * other)
 
+    # возвращение точек координат
     def dot(self, other):
-        """Return the dot product"""
         return self.x * other.x + self.y * other.y + self.z * other.z
 
     def cross(self, other):
@@ -42,6 +42,7 @@ class Point:
                      self.z * other.x - self.x * other.z,
                      self.x * other.y - self.y * other.x)
 
+    # доступ по индексу
     def __getitem__(self, item):
         if item == 0:
             return self.x
@@ -51,11 +52,13 @@ class Point:
             return self.z
         raise IndexError("Point index out of range")
 
+    # возвращение итератора
     def __iter__(self):
         yield self.x
         yield self.y
         yield self.z
 
+    # возвращение количество вхождение подстроки __sub__
     def count(self, val):
         return int(self.x == val) + int(self.y == val) + int(self.z == val)
 
@@ -130,6 +133,7 @@ class Matrix:
         self.vals = [a - b for a, b in zip(self.vals, other.vals)]
         return self
 
+    # умножение матрицы на матрицу
     def __mul__(self, other):
         """Do Matrix-Matrix or Matrix-Point multiplication."""
         if isinstance(other, Point):
